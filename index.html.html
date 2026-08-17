@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>북부지역단 나의 시상금은?</title>
+<style>
+  :root{
+    --navy-900:#0f1b33;
+    --navy-800:#16274a;
+    --navy-700:#1e335f;
+    --amber-400:#fbbf24;
+    --amber-300:#fcd34d;
+    --slate-50:#fafaf9;
+    --slate-100:#f1f0ee;
+    --slate-400:#9ca3af;
+    --slate-500:#6b7280;
+    --slate-600:#475569;
+    --slate-800:#1e293b;
+    --slate-900:#0f172a;
+    --sky:#0284c7;
+    --rose:#e11d48;
+    --green:#059669;
+    --violet:#7c3aed;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--slate-50);
+    font-family:"Apple SD Gothic Neo","Malgun Gothic","Pretendard",-apple-system,BlinkMacSystemFont,sans-serif;
+    color:var(--slate-900);
+  }
+  .wrap{max-width:480px;margin:0 auto;padding-bottom:60px;}
+
+  /* 헤더 */
+  header{
+    background:linear-gradient(135deg, var(--navy-900), var(--navy-800) 55%, var(--navy-700));
+    padding:34px 20px 42px;
+    border-radius:0 0 40px 40px;
+    box-shadow:0 10px 30px rgba(15,27,51,0.25);
+  }
+  .eyebrow{
+    display:flex;align-items:center;gap:8px;
+    color:var(--amber-300);font-weight:700;font-size:13px;
+    letter-spacing:.02em;margin-bottom:10px;
+  }
+  header h1{
+    color:#fff;font-size:26px;font-weight:900;line-height:1.35;margin:0 0 8px;
+  }
+  header p{color:#c7d2e6;font-size:14px;margin:0;}
+
+  main{padding:0 20px;margin-top:-22px;}
+
+  /* 카드 공통 */
+  .card{
+    background:#fff;border-radius:24px;
+    box-shadow:0 8px 24px rgba(15,23,42,0.08);
+    border:1px solid #f1f0ee;
+    padding:20px;margin-bottom:24px;
+  }
+
+  label.field-label{display:block;font-weight:800;font-size:16px;margin-bottom:4px;color:var(--slate-800);}
+  p.field-sub{color:var(--rose);font-weight:600;font-size:13px;margin:0 0 8px;}
+  p.field-note{color:var(--slate-500);font-size:13px;margin:0 0 8px;}
+
+  .money-input{
+    display:flex;align-items:center;
+    border:2px solid #e5e7eb;border-radius:18px;
+    overflow:hidden;background:#fff;margin-bottom:20px;
+    transition:border-color .15s;
+  }
+  .money-input:focus-within{border-color:var(--amber-400);}
+  .money-input input{
+    flex:1;border:0;outline:0;padding:16px 14px;
+    font-size:20px;font-weight:800;color:var(--slate-900);
+    min-width:0;background:transparent;
+  }
+  .money-input input::placeholder{color:#d1d5db;font-weight:400;}
+  .money-input span{padding-right:16px;color:var(--slate-500);font-weight:700;font-size:16px;}
+
+  .yn-title{font-weight:800;font-size:16px;color:var(--slate-800);margin-bottom:2px;}
+  .yn-note{color:var(--slate-500);font-size:13px;margin:0 0 10px;}
+  .yn-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px;}
+  .yn-btn{
+    padding:16px 0;border-radius:18px;font-size:17px;font-weight:800;
+    border:2px solid #e5e7eb;background:#fff;color:var(--slate-600);
+    cursor:pointer;transition:all .12s;
+  }
+  .yn-btn.active{background:var(--slate-900);border-color:var(--slate-900);color:var(--amber-400);}
+
+  .calc-btn{
+    width:100%;margin-top:22px;padding:19px 0;border:0;border-radius:18px;
+    font-size:19px;font-weight:900;cursor:pointer;
+    background:#e5e7eb;color:#9ca3af;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .calc-btn.enabled{
+    background:var(--slate-900);color:var(--amber-400);
+    box-shadow:0 8px 18px rgba(15,23,42,0.25);
+  }
+  .calc-hint{text-align:center;color:var(--slate-400);font-size:13px;margin-top:8px;}
+
+  /* 결과 */
+  #result{display:none;}
+  .total-box{
+    background:linear-gradient(135deg, var(--slate-900), var(--navy-800));
+    border-radius:24px;padding:28px 22px;margin-bottom:22px;
+    text-align:center;position:relative;overflow:hidden;
+    box-shadow:0 10px 26px rgba(15,23,42,0.3);
+  }
+  .total-box .spark{position:absolute;top:16px;right:16px;font-size:26px;opacity:.35;}
+  .total-box .label{color:var(--amber-300);font-weight:800;font-size:13px;margin-bottom:6px;}
+  .total-box .amount{color:#fff;font-size:34px;font-weight:900;margin:0 0 10px;}
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--amber-400);color:var(--slate-900);
+    font-weight:800;font-size:12px;padding:6px 14px;border-radius:999px;
+  }
+
+  .result-card{
+    background:#fff;border-radius:22px;overflow:hidden;margin-bottom:16px;
+    box-shadow:0 6px 18px rgba(15,23,42,0.07);border:1px solid #f1f0ee;
+  }
+  .result-head{padding:12px 18px;display:flex;align-items:center;gap:8px;}
+  .result-head span{color:#fff;font-weight:800;font-size:15px;}
+  .result-body{padding:18px;}
+  .result-amount{font-size:26px;font-weight:900;color:var(--slate-900);margin:0 0 8px;}
+  .result-sub{font-size:14px;color:var(--slate-600);margin:2px 0;}
+  .note-pill{
+    font-size:12px;font-weight:700;border-radius:14px;padding:9px 12px;margin-top:8px;
+  }
+
+  .tone-blue{background:linear-gradient(90deg,#0284c7,#0369a1);}
+  .tone-rose{background:linear-gradient(90deg,#e11d48,#be123c);}
+  .tone-green{background:linear-gradient(90deg,#059669,#047857);}
+  .tone-violet{background:linear-gradient(90deg,#7c3aed,#6d28d9);}
+  .pill-blue{background:#e0f2fe;color:#0369a1;}
+  .pill-green{background:#d1fae5;color:#047857;}
+  .pill-violet{background:#ede9fe;color:#6d28d9;}
+
+  .info-box{
+    border-radius:22px;padding:18px;margin-bottom:14px;
+    display:flex;gap:12px;align-items:flex-start;
+  }
+  .info-amber{background:#fef3c7;border:2px solid #fde68a;}
+  .info-amber b{color:#92400e;}
+  .info-amber p{color:#92400e;font-size:13px;line-height:1.6;margin:0;}
+  .info-slate{background:var(--slate-100);}
+  .info-slate p{color:var(--slate-500);font-size:12px;line-height:1.6;margin:0;}
+  .icon{font-size:20px;line-height:1;flex-shrink:0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">🏆 북부지역단 8월 3주차 시상 가이드</div>
+    <h1>북부지역단<br/>나의 시상금은?</h1>
+    <p>실적을 입력하면 예상 시상금을 바로 계산해드려요</p>
+  </header>
+
+  <main>
+    <!-- 입력 카드 -->
+    <div class="card">
+      <label class="field-label">① 인보험 실적</label>
+      <p class="field-sub">실손 및 본인계약 제외 (관리사항 예외항목 시상안 참고)</p>
+      <div class="money-input">
+        <input id="perf" type="text" inputmode="numeric" placeholder="예: 550000" />
+        <span>원</span>
+      </div>
+
+      <label class="field-label">② 하이캡 20배수 이상 인보험 실적</label>
+      <div class="money-input">
+        <input id="hicap" type="text" inputmode="numeric" placeholder="예: 400000" />
+        <span>원</span>
+      </div>
+
+      <label class="field-label">③ 고하이캡 브릿지(17배수 이상) 인보험 실적</label>
+      <div class="money-input">
+        <input id="bridge" type="text" inputmode="numeric" placeholder="예: 200000" />
+        <span>원</span>
+      </div>
+
+      <label class="field-label">④ 비암치플랜 실적</label>
+      <div class="money-input">
+        <input id="noncancer" type="text" inputmode="numeric" placeholder="예: 100000" />
+        <span>원</span>
+      </div>
+
+      <div class="yn-title">도입 or 월납 100만원 이상 실적인가요?</div>
+      <p class="yn-note">(신규 위촉 1~4차월, 일납 100만원↑ 해당 여부)</p>
+      <div class="yn-grid">
+        <button type="button" class="yn-btn" id="yn-yes">예</button>
+        <button type="button" class="yn-btn" id="yn-no">아니오</button>
+      </div>
+
+      <button type="button" class="calc-btn" id="calcBtn">🪙 내 시상금 계산하기</button>
+      <p class="calc-hint" id="calcHint">①번 실적과 도입/월납 여부는 필수 입력이에요</p>
+    </div>
+
+    <!-- 결과 -->
+    <div id="result">
+      <div class="total-box">
+        <div class="spark">✨</div>
+        <div class="label">예상 현금 시상금 합계</div>
+        <p class="amount" id="totalAmount">0원</p>
+        <span class="badge" id="agentBadge">✔ 일반 인정 기준 적용</span>
+      </div>
+
+      <div class="result-card">
+        <div class="result-head tone-blue"><span>📈 인보험 기본 주차시상 (8/18~8/21)</span></div>
+        <div class="result-body">
+          <p class="result-amount" id="baseTotal">0원</p>
+          <p class="result-sub">· 기본시상 <b id="baseAward">0원</b></p>
+          <p class="result-sub">· 하이캡 우대시상(20배수↑) <b id="hicapBonus">0원</b></p>
+          <p class="note-pill pill-blue" id="baseGapNote">다음 구간까지 0원 남았어요</p>
+        </div>
+      </div>
+
+      <div class="result-card">
+        <div class="result-head tone-rose"><span>🎁 2주차 구간 참여 이벤트 (택1)</span></div>
+        <div class="result-body" id="giftBody">
+          <p class="result-sub">실적 10만원 이상부터 사은품 대상이에요</p>
+        </div>
+      </div>
+
+      <div class="result-card">
+        <div class="result-head tone-green"><span>✨ 비암치플랜 추가 100% 시상</span></div>
+        <div class="result-body">
+          <p class="result-amount" id="nonCancerAmount">0원</p>
+          <p class="note-pill pill-green" id="nonCancerGapNote" style="display:none;"></p>
+        </div>
+      </div>
+
+      <div class="result-card">
+        <div class="result-head tone-violet"><span>🏅 2차년도 고하이캡 브릿지 시책</span></div>
+        <div class="result-body" id="bridgeBody">
+          <p class="result-amount" id="bridgeAmount">0원</p>
+          <p class="result-sub" id="bridgePct"></p>
+          <p class="note-pill pill-violet">※ 9월 1~2주차 10만원 이상 실적 조건 충족 시 지급돼요</p>
+        </div>
+      </div>
+
+      <div class="info-box info-amber">
+        <div class="icon">🏆</div>
+        <p><b>비암치플랜 판매왕 · 건수왕 순위시상</b>은 지역단 순위 데이터가 확정된 후 별도로 안내드릴게요.</p>
+      </div>
+
+      <div class="info-box info-slate">
+        <div class="icon">ℹ️</div>
+        <p>본 결과는 예상 금액이며, 실손·유병자실손·단독실손 등 일부 소보종과 본인계약(집중관리 항목)은 시상 제외 대상입니다. 팀 시상 및 순위시상은 본 계산에 포함되지 않았습니다. 상세 조건은 관리사항 및 지역단 공지를 확인해주세요.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+/* ============================================================
+   1. 계산 로직 (CALC LOGIC) — UI와 완전히 분리
+   시상 규칙이 바뀌면 이 블록의 표/함수만 교체하면 됩니다.
+   ============================================================ */
+
+// [시상1] 인보험 기본 주차시상 (8/18~8/21, 4영업일)
+const BASE_TIERS = [
+  { min: 500000, baseRate: 0.6, bonusRate: 0.3 },
+  { min: 400000, base: 240000, bonus: 120000 },
+  { min: 300000, base: 180000, bonus: 90000 },
+  { min: 200000, base: 120000, bonus: 60000 },
+  { min: 100000, base: 60000, bonus: 30000 },
+  { min: 50000,  base: 30000,  bonus: 15000 },
+];
+
+function calcBaseAward(perf){
+  const tier = BASE_TIERS.find(t => perf >= t.min);
+  if(!tier) return 0;
+  return tier.baseRate ? Math.round(perf * tier.baseRate) : tier.base;
+}
+function calcHicapBonus(hicapPerf){
+  const tier = BASE_TIERS.find(t => hicapPerf >= t.min);
+  if(!tier) return 0;
+  return tier.bonusRate ? Math.round(hicapPerf * tier.bonusRate) : tier.bonus;
+}
+
+// [시상2] 2주차 구간 인보험 참여 이벤트 (사은품 택1, 최고구간 1개만)
+const GIFT_TIERS = [
+  { min: 300000, name: "테팔 무선청소기", altLabel: "신세계 9만원 상품권", cash: 90000 },
+  { min: 200000, name: "필립스 에어프라이어", altLabel: "신세계 6만원 상품권", cash: 60000 },
+  { min: 100000, name: "정관장 홍삼정 1SET", altLabel: "신세계 3만원 상품권", cash: 30000 },
+];
+function calcGift(perf){ return GIFT_TIERS.find(t => perf >= t.min) || null; }
+
+// [시상3] 비암치플랜 추가 100% 시상 (08.18~08.21, 본인계약 인정연장)
+const NONCANCER_TIERS = [
+  { min: 100000, award: 100000 },
+  { min: 50000,  award: 50000 },
+  { min: 20000,  award: 20000 },
+];
+function calcNonCancerAward(amount){
+  const tier = NONCANCER_TIERS.find(t => amount >= t.min);
+  return tier ? tier.award : 0;
+}
+
+// [시상4] 2차년도 고하이캡 브릿지 시책 (장기 하이캡 17배수↑, 9월1~2주차 조건 충족분 지급)
+const BRIDGE_TIERS = [
+  { min: 300000, award: 1500000, pct: "약 380%" },
+  { min: 200000, award: 1000000, pct: "약 330%" },
+  { min: 100000, award: 500000,  pct: "약 250%" },
+];
+function calcBridgeAward(amount){ return BRIDGE_TIERS.find(t => amount >= t.min) || null; }
+
+function nextGap(amount, tiersAsc){
+  for(const t of tiersAsc){ if(amount < t) return t - amount; }
+  return 0;
+}
+
+// 최종 합산 — 중복지급 규칙: 기본주차시상 + 하이캡우대시상 + 비암치플랜시상 + 고하이캡브릿지시책은 모두 중복 지급
+// 참여이벤트(사은품)는 구간 내 최고 등급 1개만 지급되며 현금 합계에는 포함하지 않음
+function calcAll({ perf, hicapPerf, bridgePerf, nonCancerPerf }){
+  const baseAward = calcBaseAward(perf);
+  const hicapBonus = calcHicapBonus(hicapPerf);
+  const gift = calcGift(perf);
+  const nonCancerAward = calcNonCancerAward(nonCancerPerf);
+  const bridge = calcBridgeAward(bridgePerf);
+  const cashTotal = baseAward + hicapBonus + nonCancerAward + (bridge ? bridge.award : 0);
+  return {
+    baseAward, hicapBonus, gift, nonCancerAward, bridge, cashTotal,
+    baseGap: nextGap(perf, [50000,100000,200000,300000,400000,500000]),
+    nonCancerGap: nextGap(nonCancerPerf, [20000,50000,100000]),
+  };
+}
+
+/* ============================================================
+   2. UI 로직
+   ============================================================ */
+const won = n => Math.round(n).toLocaleString('ko-KR') + '원';
+const parseNum = str => Number(String(str).replace(/[^0-9]/g,'')) || 0;
+const fmt = n => n ? n.toLocaleString('ko-KR') : '';
+
+function bindMoneyInput(id){
+  const el = document.getElementById(id);
+  el.addEventListener('input', () => {
+    const num = parseNum(el.value);
+    el.value = fmt(num);
+    el.dataset.value = num;
+    updateCalcButton();
+  });
+}
+['perf','hicap','bridge','noncancer'].forEach(bindMoneyInput);
+
+let isNewAgent = null;
+document.getElementById('yn-yes').addEventListener('click', () => setAgent(true));
+document.getElementById('yn-no').addEventListener('click', () => setAgent(false));
+function setAgent(v){
+  isNewAgent = v;
+  document.getElementById('yn-yes').classList.toggle('active', v === true);
+  document.getElementById('yn-no').classList.toggle('active', v === false);
+  updateCalcButton();
+}
+
+function getVal(id){ return parseNum(document.getElementById(id).value); }
+
+function updateCalcButton(){
+  const perf = getVal('perf');
+  const btn = document.getElementById('calcBtn');
+  const hint = document.getElementById('calcHint');
+  const ok = perf > 0 && isNewAgent !== null;
+  btn.classList.toggle('enabled', ok);
+  hint.style.display = ok ? 'none' : 'block';
+}
+
+document.getElementById('calcBtn').addEventListener('click', () => {
+  const perf = getVal('perf');
+  if(perf <= 0 || isNewAgent === null) return;
+
+  const result = calcAll({
+    perf,
+    hicapPerf: getVal('hicap'),
+    bridgePerf: getVal('bridge'),
+    nonCancerPerf: getVal('noncancer'),
+  });
+
+  document.getElementById('totalAmount').textContent = won(result.cashTotal);
+  document.getElementById('agentBadge').textContent = isNewAgent
+    ? '✔ 리얼실적 100% 인정 대상'
+    : '✔ 일반 인정 기준 적용';
+
+  document.getElementById('baseTotal').textContent = won(result.baseAward + result.hicapBonus);
+  document.getElementById('baseAward').textContent = won(result.baseAward);
+  document.getElementById('hicapBonus').textContent = won(result.hicapBonus);
+  document.getElementById('baseGapNote').textContent = result.baseGap > 0
+    ? `다음 구간까지 ${won(result.baseGap)} 남았어요`
+    : '최고 구간 달성! 실적의 60%가 시상돼요';
+
+  const giftBody = document.getElementById('giftBody');
+  giftBody.innerHTML = result.gift
+    ? `<p class="result-amount" style="font-size:20px;">${result.gift.name}</p>
+       <p class="result-sub">또는 ${result.gift.altLabel} (${won(result.gift.cash)} 상당)</p>`
+    : `<p class="result-sub">실적 10만원 이상부터 사은품 대상이에요</p>`;
+
+  document.getElementById('nonCancerAmount').textContent = won(result.nonCancerAward);
+  const gapNote = document.getElementById('nonCancerGapNote');
+  if(result.nonCancerGap > 0){
+    gapNote.style.display = 'inline-block';
+    gapNote.textContent = `다음 구간까지 ${won(result.nonCancerGap)} 남았어요`;
+  } else {
+    gapNote.style.display = 'none';
+  }
+
+  document.getElementById('bridgeAmount').textContent = won(result.bridge ? result.bridge.award : 0);
+  document.getElementById('bridgePct').textContent = result.bridge
+    ? `환산율 ${result.bridge.pct} 수준의 시상금이에요`
+    : '브릿지 실적 10만원 이상부터 지급 대상이에요';
+
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('result').scrollIntoView({ behavior:'smooth', block:'start' });
+});
+</script>
+</body>
+</html>
