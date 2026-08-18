@@ -22,6 +22,8 @@
     --rose:#e11d48;
     --green:#059669;
     --violet:#7c3aed;
+    --orange-500:#f7941d;
+    --orange-600:#e07c00;
   }
   *{box-sizing:border-box;}
   body{
@@ -35,19 +37,28 @@
   /* 헤더 */
   header{
     background:linear-gradient(135deg, var(--navy-900), var(--navy-800) 55%, var(--navy-700));
-    padding:34px 20px 42px;
     border-radius:0 0 40px 40px;
     box-shadow:0 10px 30px rgba(15,27,51,0.25);
+    overflow:hidden;
   }
+  .banner-img{
+    display:block;width:100%;height:auto;
+  }
+  .header-content{padding:22px 20px 42px;}
   .eyebrow{
-    display:flex;align-items:center;gap:8px;
-    color:var(--amber-300);font-weight:700;font-size:13px;
-    letter-spacing:.02em;margin-bottom:10px;
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--orange-500);color:#fff;
+    font-weight:800;font-size:12px;
+    letter-spacing:.02em;margin-bottom:12px;
+    padding:7px 14px;border-radius:999px;
   }
   header h1{
-    color:#fff;font-size:26px;font-weight:900;line-height:1.35;margin:0 0 8px;
+    color:#fff;font-size:34px;font-weight:900;line-height:1.2;margin:0 0 10px;
   }
-  header p{color:#c7d2e6;font-size:14px;margin:0;}
+  header h1 .accent{color:var(--orange-500);}
+  header p{color:#c7d2e6;font-size:14px;line-height:1.6;margin:0;}
+  header p .accent{color:var(--orange-500);font-weight:700;}
+  header p.tagline{font-size:13px;color:#8fa1c4;margin-top:10px;}
 
   main{padding:0 20px;margin-top:-22px;}
 
@@ -154,9 +165,14 @@
 <div class="wrap">
 
   <header>
-    <div class="eyebrow">🏆 북부지역단 8월 3주차 시상 가이드</div>
-    <h1>북부지역단<br/>나의 시상금은?</h1>
-    <p>실적을 입력하면 예상 시상금을 바로 계산해드려요</p>
+    <img src="assets/banner.png" alt="리치북부 배너" class="banner-img"
+         onerror="this.style.display='none'" />
+    <div class="header-content">
+      <div class="eyebrow">🔔 이번주 내 시상, 바로 확인</div>
+      <h1>리치북부</h1>
+      <p>북부지역단의 든든한 파트너!<br/>언제나 함께, 성장하는 <span class="accent">리치북부</span></p>
+      <p class="tagline">실적을 입력하면 예상 시상금을 바로 계산해드려요</p>
+    </div>
   </header>
 
   <main>
