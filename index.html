@@ -24,6 +24,7 @@
     --violet:#7c3aed;
     --orange-500:#f7941d;
     --orange-600:#e07c00;
+    --teal:#0d9488;
   }
   *{box-sizing:border-box;}
   body{
@@ -44,21 +45,6 @@
   .banner-img{
     display:block;width:100%;height:auto;
   }
-  .header-content{padding:22px 20px 42px;}
-  .eyebrow{
-    display:inline-flex;align-items:center;gap:6px;
-    background:var(--orange-500);color:#fff;
-    font-weight:800;font-size:12px;
-    letter-spacing:.02em;margin-bottom:12px;
-    padding:7px 14px;border-radius:999px;
-  }
-  header h1{
-    color:#fff;font-size:34px;font-weight:900;line-height:1.2;margin:0 0 10px;
-  }
-  header h1 .accent{color:var(--orange-500);}
-  header p{color:#c7d2e6;font-size:14px;line-height:1.6;margin:0;}
-  header p .accent{color:var(--orange-500);font-weight:700;}
-  header p.tagline{font-size:13px;color:#8fa1c4;margin-top:10px;}
 
   main{padding:0 20px;margin-top:-22px;}
 
@@ -105,6 +91,10 @@
   .money-input input::placeholder{color:#d1d5db;font-weight:400;}
   .money-input span{padding-right:16px;color:var(--slate-500);font-weight:700;font-size:16px;}
 
+  .dual-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px;}
+  .dual-row .sub-label{font-size:12px;color:var(--slate-500);font-weight:700;margin-bottom:6px;}
+  .dual-row .money-input{margin-bottom:14px;}
+
   .yn-title{font-weight:800;font-size:16px;color:var(--slate-800);margin-bottom:2px;}
   .yn-note{color:var(--slate-500);font-size:13px;margin:0 0 10px;}
   .yn-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px;}
@@ -138,6 +128,7 @@
   .total-box .spark{position:absolute;top:16px;right:16px;font-size:26px;opacity:.35;}
   .total-box .label{color:var(--amber-300);font-weight:800;font-size:13px;margin-bottom:6px;}
   .total-box .amount{color:#fff;font-size:34px;font-weight:900;margin:0 0 10px;}
+  .total-box .sub{color:#a8b6d6;font-size:12px;margin-top:-4px;margin-bottom:10px;}
   .badge{
     display:inline-flex;align-items:center;gap:6px;
     background:var(--amber-400);color:var(--slate-900);
@@ -162,10 +153,12 @@
   .tone-green{background:linear-gradient(90deg,#059669,#047857);}
   .tone-violet{background:linear-gradient(90deg,#7c3aed,#6d28d9);}
   .tone-amber{background:linear-gradient(90deg,#f59e0b,#d97706);}
+  .tone-teal{background:linear-gradient(90deg,#0d9488,#0f766e);}
   .pill-blue{background:#e0f2fe;color:#0369a1;}
   .pill-green{background:#d1fae5;color:#047857;}
   .pill-violet{background:#ede9fe;color:#6d28d9;}
   .pill-amber{background:#fef3c7;color:#b45309;}
+  .pill-teal{background:#ccfbf1;color:#0f766e;}
 
   .info-box{
     border-radius:22px;padding:18px;margin-bottom:14px;
@@ -199,7 +192,7 @@
 
       <label class="field-label">② 하이캡 20배수 이상 인보험 실적</label>
       <div class="money-input">
-        <input id="hicap" type="text" inputmode="numeric" placeholder="예: 400000" />
+        <input id="hicap" type="text" inputmode="numeric" placeholder="예: 200000" />
         <span>원</span>
       </div>
 
@@ -220,44 +213,71 @@
         <p class="tooltip-note">※ 인생의 품격 통합사망 3천만원 미만 부보건은 미인정</p>
       </div>
       <div class="money-input">
-        <input id="mainproduct" type="text" inputmode="numeric" placeholder="예: 100000" />
+        <input id="mainproduct" type="text" inputmode="numeric" placeholder="예: 200000" />
         <span>원</span>
       </div>
 
-      <div class="yn-title">도입 or 월납 100만원 이상 실적인가요?</div>
+      <div class="yn-title">⑤ 도입 or 월납 100만원 이상 실적인가요?</div>
       <p class="yn-note">(신규 위촉 1~4차월, 일납 100만원↑ 해당 여부)</p>
       <div class="yn-grid">
         <button type="button" class="yn-btn" id="yn-yes">예</button>
         <button type="button" class="yn-btn" id="yn-no">아니오</button>
       </div>
 
+      <label class="field-label" style="margin-top:10px;">⑥ 운전자보험 건수 &amp; 금액</label>
+      <p class="field-note">(09.14~09.23, 1건 최소 월납 1만원 기준 / 1만원 미만은 0.5건 인정)</p>
+      <div class="dual-row">
+        <div>
+          <div class="sub-label">건수</div>
+          <div class="money-input" style="margin-bottom:0;">
+            <input id="driverCount" type="text" inputmode="numeric" placeholder="예: 4" />
+            <span>건</span>
+          </div>
+        </div>
+        <div>
+          <div class="sub-label">월납보험료 합계</div>
+          <div class="money-input" style="margin-bottom:0;">
+            <input id="driverAmount" type="text" inputmode="numeric" placeholder="예: 40000" />
+            <span>원</span>
+          </div>
+        </div>
+      </div>
+
       <button type="button" class="calc-btn" id="calcBtn">🪙 내 시상금 계산하기</button>
-      <p class="calc-hint" id="calcHint">①번 실적과 도입/월납 여부는 필수 입력이에요</p>
+      <p class="calc-hint" id="calcHint">①번 실적과 ⑤번 도입/월납 여부는 필수 입력이에요</p>
     </div>
 
     <!-- 결과 -->
     <div id="result">
       <div class="total-box">
         <div class="spark">✨</div>
-        <div class="label">예상 현금 시상금 합계</div>
+        <div class="label">예상 시상금 합계</div>
         <p class="amount" id="totalAmount">0원</p>
+        <p class="sub">(현금 + 상품권 환산가 포함)</p>
         <span class="badge" id="agentBadge">✔ 일반 인정 기준 적용</span>
       </div>
 
       <div class="result-card">
-        <div class="result-head tone-blue"><span>📈 인보험 기본 주차시상 (8/24~8/31)</span></div>
+        <div class="result-head tone-blue"><span>📈 인보험 주차 기본시상 (9/21~9/23)</span></div>
         <div class="result-body">
-          <p class="result-amount" id="baseTotal">0원</p>
-          <p class="result-sub">· 기본시상 <b id="baseAward">0원</b></p>
-          <p class="result-sub">· 하이캡 우대시상(20배수↑) <b id="hicapBonus">0원</b></p>
+          <p class="result-amount" id="baseAward">0원</p>
           <p class="note-pill pill-blue" id="baseGapNote">다음 구간까지 0원 남았어요</p>
         </div>
       </div>
 
       <div class="result-card">
-        <div class="result-head tone-rose"><span>🎁 8월 4주차 추석준비 조기참여 이벤트</span></div>
-        <div class="result-body" id="giftBody">
-          <p class="result-sub">실적 10만원 이상부터 사은품 대상이에요</p>
+        <div class="result-head tone-teal"><span>🍚 명절 배달음식 지원 (하이캡 20배수↑)</span></div>
+        <div class="result-body" id="hicapBody">
+          <p class="result-amount" id="hicapCash">0원</p>
+          <p class="result-sub" id="hicapDetail">인보험 5만원당 배달의민족 1만원권 1장</p>
+        </div>
+      </div>
+
+      <div class="result-card">
+        <div class="result-head tone-rose"><span>🚗 명절맞이 운전자보험 활성화</span></div>
+        <div class="result-body" id="driverBody">
+          <p class="result-amount" id="driverAward">0원</p>
+          <p class="result-sub" id="driverDetail"></p>
         </div>
       </div>
 
@@ -266,7 +286,7 @@
         <div class="result-body" id="mainProductBody">
           <p class="result-amount" id="mainProductAmount">0원</p>
           <p class="result-sub" id="mainProductPct"></p>
-          <p class="note-pill pill-amber">※ 8월 4~5주차 · 9월 1주 실적 조건 충족 시 지급돼요</p>
+          <p class="note-pill pill-amber">※ 10월 1주차 10만원 이상 실적 조건 충족 시 지급돼요</p>
         </div>
       </div>
 
@@ -275,7 +295,7 @@
         <div class="result-body" id="bridgeBody">
           <p class="result-amount" id="bridgeAmount">0원</p>
           <p class="result-sub" id="bridgePct"></p>
-          <p class="note-pill pill-violet">※ 9월 1~2주차 10만원 이상 실적 조건 충족 시 지급돼요</p>
+          <p class="note-pill pill-violet">※ 10월 1~2주차 10만원 이상 실적 조건 충족 시 지급돼요</p>
         </div>
       </div>
 
@@ -298,34 +318,45 @@
    시상 규칙이 바뀌면 이 블록의 표/함수만 교체하면 됩니다.
    ============================================================ */
 
-// [시상1] 인보험 기본 주차시상 (8/24~8/31, 6영업일) — 8월 4주차 기준
+// [시상1] 인보험 주차 기본시상 (9/21~9/23, 3영업일) — 9월 4주차 기준 [지역단 시상]
 const BASE_TIERS = [
-  { min: 500000, baseRate: 0.4, bonusRate: 0.3 },
-  { min: 400000, base: 160000, bonus: 120000 },
-  { min: 300000, base: 120000, bonus: 90000 },
-  { min: 200000, base: 80000,  bonus: 60000 },
-  { min: 100000, base: 40000,  bonus: 30000 },
-  { min: 50000,  base: 20000,  bonus: 15000 },
+  { min: 500000, baseRate: 0.4 },
+  { min: 400000, base: 160000 },
+  { min: 300000, base: 120000 },
+  { min: 200000, base: 80000 },
+  { min: 100000, base: 40000 },
+  { min: 50000,  base: 20000 },
 ];
-
 function calcBaseAward(perf){
   const tier = BASE_TIERS.find(t => perf >= t.min);
   if(!tier) return 0;
   return tier.baseRate ? Math.round(perf * tier.baseRate) : tier.base;
 }
-function calcHicapBonus(hicapPerf){
-  const tier = BASE_TIERS.find(t => hicapPerf >= t.min);
-  if(!tier) return 0;
-  return tier.bonusRate ? Math.round(hicapPerf * tier.bonusRate) : tier.bonus;
+
+// [시상2] 명절 가족과 함께하는 배달음식 지원 [지역단 시상]
+// 하이캡 20배수 이상 인보험 실적 5만원 당 배달의민족 상품권 1만원권 1장 지급
+function calcHicapCoupon(hicapPerf){
+  const units = Math.floor(hicapPerf / 50000);
+  return { units, cash: units * 10000 };
 }
 
-// [시상2] 8월 4주차 추석준비 조기참여 이벤트 (24일~26일, 3영업일)
-// 인보험 실적 10만원 이상 참여 시 스팸 8호 1SET 지급 (단일 기준)
-function calcGift(perf){
-  return perf >= 100000 ? { name: "스팸 8호 1SET" } : null;
+// [시상3] 명절맞이 운전자보험 활성화 (09.14~09.23)
+// 건수 기준 SK주유권 지급. 1건 최소 월납보험료 1만원, 1만원 미만은 0.5건으로 인정
+const DRIVER_TIERS = [
+  { min: 6, cash: 50000, label: "SK주유권 5만원" },
+  { min: 4, cash: 30000, label: "SK주유권 3만원" },
+  { min: 2, cash: 10000, label: "SK주유권 1만원" },
+];
+function calcDriverAward(count, totalAmount){
+  if(count <= 0) return { effCount: 0, tier: null };
+  const avgPerCase = totalAmount / count;
+  // 평균 월납보험료가 1만원 미만이면 건당 0.5건으로 환산
+  const effCount = avgPerCase >= 10000 ? count : count * 0.5;
+  const tier = DRIVER_TIERS.find(t => effCount >= t.min) || null;
+  return { effCount, tier };
 }
 
-// [시상3] 2차년도 고하이캡 브릿지 시책 (장기 하이캡 17배수↑, 8월4~5주&9월1~2주차 조건 충족분 지급)
+// [시상4] 2차년도 고하이캡 브릿지 시책 (장기 하이캡 17배수↑, 9월3~5주&10월1~2주차 조건 충족분 지급)
 const BRIDGE_TIERS = [
   { min: 300000, award: 1500000, pct: "약 380%" },
   { min: 200000, award: 1000000, pct: "약 330%" },
@@ -333,29 +364,33 @@ const BRIDGE_TIERS = [
 ];
 function calcBridgeAward(amount){ return BRIDGE_TIERS.find(t => amount >= t.min) || null; }
 
-// [시상4] 2차년도 주력상품 브릿지 시상 (8월4~5주&9월1주, 주력상품 10만원 이상 → 24만원 정액)
+// [시상5] 2차년도 주력상품 브릿지 시상 (9월4~5주&10월1주)
 // 대상 상품: 퍼펙트 플러스, 간편보험, 인생의 품격, 굿앤굿1540, 굿앤굿 스타(연만기,세만기 전체, 하이캡 무관)
-function calcMainProductAward(amount){
-  return amount >= 100000 ? { award: 240000, pct: "약 120%" } : null;
-}
+const MAIN_PRODUCT_TIERS = [
+  { min: 200000, award: 660000, pct: "약 220%" },
+  { min: 100000, award: 240000, pct: "약 120%" },
+];
+function calcMainProductAward(amount){ return MAIN_PRODUCT_TIERS.find(t => amount >= t.min) || null; }
 
 function nextGap(amount, tiersAsc){
   for(const t of tiersAsc){ if(amount < t) return t - amount; }
   return 0;
 }
 
-// 최종 합산 — 중복지급 규칙: 기본주차시상 + 하이캡우대시상 + 고하이캡브릿지시책 + 주력상품브릿지시상은 모두 중복 지급
-// 참여이벤트(스팸 사은품)는 현금 합계에는 포함하지 않음
-function calcAll({ perf, hicapPerf, bridgePerf, mainProductPerf }){
+// 최종 합산 — 중복지급 규칙: 기본시상 + 배달음식지원 + 운전자보험시상 + 고하이캡브릿지 + 주력상품브릿지는 모두 중복 지급
+function calcAll({ perf, hicapPerf, bridgePerf, mainProductPerf, driverCount, driverAmount }){
   const baseAward = calcBaseAward(perf);
-  const hicapBonus = calcHicapBonus(hicapPerf);
-  const gift = calcGift(perf);
+  const hicapCoupon = calcHicapCoupon(hicapPerf);
   const bridge = calcBridgeAward(bridgePerf);
   const mainProduct = calcMainProductAward(mainProductPerf);
-  const cashTotal = baseAward + hicapBonus
+  const driver = calcDriverAward(driverCount, driverAmount);
+  const driverCash = driver.tier ? driver.tier.cash : 0;
+
+  const cashTotal = baseAward + hicapCoupon.cash + driverCash
     + (bridge ? bridge.award : 0) + (mainProduct ? mainProduct.award : 0);
+
   return {
-    baseAward, hicapBonus, gift, bridge, mainProduct, cashTotal,
+    baseAward, hicapCoupon, bridge, mainProduct, driver, driverCash, cashTotal,
     baseGap: nextGap(perf, [50000,100000,200000,300000,400000,500000]),
   };
 }
@@ -376,7 +411,7 @@ function bindMoneyInput(id){
     updateCalcButton();
   });
 }
-['perf','hicap','bridge','mainproduct'].forEach(bindMoneyInput);
+['perf','hicap','bridge','mainproduct','driverCount','driverAmount'].forEach(bindMoneyInput);
 
 document.getElementById('mainProductInfoBtn').addEventListener('click', () => {
   document.getElementById('mainProductTooltip').classList.toggle('open');
@@ -413,6 +448,8 @@ document.getElementById('calcBtn').addEventListener('click', () => {
     hicapPerf: getVal('hicap'),
     bridgePerf: getVal('bridge'),
     mainProductPerf: getVal('mainproduct'),
+    driverCount: getVal('driverCount'),
+    driverAmount: getVal('driverAmount'),
   });
 
   document.getElementById('totalAmount').textContent = won(result.cashTotal);
@@ -420,18 +457,25 @@ document.getElementById('calcBtn').addEventListener('click', () => {
     ? '✔ 리얼실적 100% 인정 대상'
     : '✔ 일반 인정 기준 적용';
 
-  document.getElementById('baseTotal').textContent = won(result.baseAward + result.hicapBonus);
   document.getElementById('baseAward').textContent = won(result.baseAward);
-  document.getElementById('hicapBonus').textContent = won(result.hicapBonus);
   document.getElementById('baseGapNote').textContent = result.baseGap > 0
     ? `다음 구간까지 ${won(result.baseGap)} 남았어요`
     : '최고 구간 달성! 실적의 40%가 시상돼요';
 
-  const giftBody = document.getElementById('giftBody');
-  giftBody.innerHTML = result.gift
-    ? `<p class="result-amount" style="font-size:20px;">${result.gift.name}</p>
-       <p class="result-sub">24일(월)~26일(수) 3영업일간 인보험 10만원 참여 시 지급</p>`
-    : `<p class="result-sub">실적 10만원 이상부터 사은품 대상이에요</p>`;
+  document.getElementById('hicapCash').textContent = won(result.hicapCoupon.cash);
+  document.getElementById('hicapDetail').textContent = result.hicapCoupon.units > 0
+    ? `배달의민족 1만원권 ${result.hicapCoupon.units}장 지급돼요`
+    : '하이캡 20배수 이상 실적 5만원부터 1만원권 1장씩 지급돼요';
+
+  const driverAward = document.getElementById('driverAward');
+  const driverDetail = document.getElementById('driverDetail');
+  if(result.driver.tier){
+    driverAward.textContent = won(result.driver.tier.cash);
+    driverDetail.textContent = `${result.driver.tier.label} (환산 ${result.driver.effCount}건 기준)`;
+  } else {
+    driverAward.textContent = '0원';
+    driverDetail.textContent = `2건 이상부터 주유권 지급돼요 (환산 ${result.driver.effCount}건)`;
+  }
 
   document.getElementById('mainProductAmount').textContent = won(result.mainProduct ? result.mainProduct.award : 0);
   document.getElementById('mainProductPct').textContent = result.mainProduct
